@@ -36,12 +36,32 @@ int main (int argc, char *argv[]) {
 	double temps[plate_x][plate_y];
 
 	//Initialize top
+	for ( int count = 0; count < 500; count++ )
+	{
+		//t1 = (0 to 499,499)
+		temps[count][499]=0.0;
+	}
 
 	//Initialize left
+	for ( int count = 0; count < 500; count++ )
+	{
+		//t2 = (0,0 to 499)
+		temps[0][count]=100.0;
+	}
 
 	//Initialize bottom
+	for ( int count = 0; count < 500; count++ )
+	{
+		//t3 = (0 to 499,0)
+		temps[count][0]=100.0;
+	}
 
 	//Initialize right
+	for ( int count = 0; count < 500; count++ )
+	{
+		//t4 = (499, 0 to 499)
+		temps[499][count]=100.0;
+	}
 
 	//3. Iterate through the array in sequence starting from the bottom corner
 	for (int x = 0; x < plate_x; x++) {

@@ -31,19 +31,19 @@ point get_rndm_ngbr(point p) {
 	//return the randomly selected point
 	if (r == 0)
 	{
-		point pn = {p.x+1,p.y};
+		point pn = {p.x,p.y+1};
 		return pn;
 	} else if (r == 1)
 	{
-		point pn = {p.x,p.y-1};
+		point pn = {p.x-1,p.y};
 		return pn;
 	} else if (r == 2)
 	{
-		point pn = {p.x,p.y+1};
+		point pn = {p.x+1,p.y};
 		return pn;
 	} else if (r == 3)
 	{
-		point pn = {p.x-1,p.y};
+		point pn = {p.x,p.y-1};
 		return pn;
 	}
 }
@@ -52,7 +52,6 @@ bool is_edge(point p) {
 	if (p.x == 0 || p.y == 0 || p.x == plate_x-1 || p.y == plate_y-1) {
 		return true;
 	}
-
 	return false;
 }
 

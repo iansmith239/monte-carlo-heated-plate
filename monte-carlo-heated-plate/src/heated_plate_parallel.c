@@ -26,7 +26,8 @@ int plate_y;
 point get_rndm_ngbr(point p) {
 	//randomly select a number 1 to 4
 	//0=T,1=L,2=R,3=B
-	int r = rand() % 4;
+    unsigned int myseed = omp_get_thread_num();
+	int r = rand_r(&myseed) % 4;
 
 	int x_add = 0;
 	int y_add = 0;
@@ -119,7 +120,7 @@ int main (int argc, char *argv[]) {
 	int x;
 	int y;
 
-# pragma omp parallel shared ( temps ) private ( x, y ) reduction ( | : p_edge_temp_sum )
+# pragma omp parallel shared ( temps ) private ( x, y )
     {
 # pragma omp for
 	for (x = 1; x < plate_x -1; x++) {
@@ -159,11 +160,12 @@ int main (int argc, char *argv[]) {
 	double rand_point_temp = 0.0;
 # pragma omp parallel shared ( rand_point_temp, temps ) private ( z )
     {
+    unsigned int myseed = omp_get_thread_num();
 # pragma omp for
 	for (z=0;z < 10;z++) {
 
-		int rand_x = rand() % plate_x;
-		int rand_y = rand() % plate_y;
+		int rand_x = rand_r(&myseed) % plate_x;
+		int rand_y = rand_r(&myseed) % plate_y;
 
 		rand_point_temp = *(*(temps+rand_x)+rand_y);
 

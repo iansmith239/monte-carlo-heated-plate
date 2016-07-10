@@ -41,7 +41,7 @@ point get_rndm_ngbr(point p) {
 	{
 		point pn = {p.x+1,p.y};
 		return pn;
-	} else if (r == 3)
+	} else
 	{
 		point pn = {p.x,p.y-1};
 		return pn;
@@ -136,5 +136,6 @@ int main (int argc, char *argv[]) {
 	double rand_point_temp = *(*(temps+rand_x)+rand_y);
 
 	printf("Temperature for point [%d,%d] is %f",rand_x,rand_y,rand_point_temp);
+	return 0;
 }
 

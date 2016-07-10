@@ -28,28 +28,35 @@ point get_rndm_ngbr(point p) {
 	//0=T,1=L,2=R,3=B
 	int r = rand() % 4;
 
+	int x_add = 0;
+	int y_add = 0;
+
+	point pn = {p.x,p.y};
+
 	//return the randomly selected point
 	if (r == 0)
 	{
-		point pn = {p.x,p.y+1};
-		return pn;
+		y_add = 1;
 	} else if (r == 1)
 	{
-		point pn = {p.x-1,p.y};
-		return pn;
+		x_add = -1;
 	} else if (r == 2)
 	{
-		point pn = {p.x+1,p.y};
-		return pn;
+		x_add = 1;
 	} else
 	{
-		point pn = {p.x,p.y-1};
-		return pn;
+		y_add = -1;
 	}
+
+	pn.x = pn.x + x_add;
+	pn.y = pn.y + y_add;
+
+	return pn;
 }
 
 bool is_edge(point p) {
 	if (p.x == 0 || p.y == 0 || p.x == plate_x-1 || p.y == plate_y-1) {
+		printf(">>>>>>>>>> Found edge point [%d,%d]\n", p.x,p.y);
 		return true;
 	}
 	return false;
@@ -57,9 +64,9 @@ bool is_edge(point p) {
 
 int main (int argc, char *argv[]) {
 
-	plate_x = 500;
-	plate_y = 500;
-	int num_edge_searches = 1000;
+	plate_x = 50;
+	plate_y = 50;
+	int num_edge_searches = 10;
 
 	//1. Get 4 temps from user
 	int temp_top = atoi(argv[1]);
@@ -67,7 +74,7 @@ int main (int argc, char *argv[]) {
 	int temp_right = atoi(argv[3]);
 	int temp_bottom = atoi(argv[4]);
 
-	printf("Temps are [T=%d,L=%d,R=%d,B=%d]",temp_top,temp_left,temp_right,temp_bottom);
+	printf("Temps are [T=%d,L=%d,R=%d,B=%d]\n",temp_top,temp_left,temp_right,temp_bottom);
 
 	//2. Create and initialize the array
 	double temps[plate_x][plate_y];
@@ -106,10 +113,12 @@ int main (int argc, char *argv[]) {
 	int x;
 	int y;
 
-	for (x = 0; x < plate_x; x++) {
-		for (y = 0; y < plate_y; y++) {
+	for (x = 1; x < plate_x -1; x++) {
+		for (y = 1; y < plate_y -1; y++) {
 			//Get info for point
 			point p = {x,y};
+
+			printf("Starting at point [%d,%d]\n", p.x,p.y);
 
 			//Search for the edge many times
 			double p_edge_temp_sum = 0.0;
@@ -119,6 +128,7 @@ int main (int argc, char *argv[]) {
 				point pn = get_rndm_ngbr(p);
 				while (is_edge(pn) == false) {
 					pn = get_rndm_ngbr(pn);
+					//printf("Got next point [%d,%d]\n", pn.x,pn.y);
 				}
 
 				double pn_temp = *(*(temps+pn.x)+pn.y);
@@ -129,13 +139,18 @@ int main (int argc, char *argv[]) {
 		}
 	}
 
-	//4.Output the temp at some random point
-	int rand_x = rand() % plate_x;
-	int rand_y = rand() % plate_y;
+	//4.Output the temp at some random points
+	int z;
+	for (z=0;z < 10;z++) {
 
-	double rand_point_temp = *(*(temps+rand_x)+rand_y);
+		int rand_x = rand() % plate_x;
+		int rand_y = rand() % plate_y;
 
-	printf("Temperature for point [%d,%d] is %f",rand_x,rand_y,rand_point_temp);
+		double rand_point_temp = *(*(temps+rand_x)+rand_y);
+
+		printf("Temperature for point [%d,%d] is %f\n",rand_x,rand_y,rand_point_temp);
+	}
+
 	return 0;
 }
 
